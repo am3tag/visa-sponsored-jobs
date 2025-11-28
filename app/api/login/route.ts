@@ -4,6 +4,9 @@ import { signAdminToken, setAdminCookie } from "@/lib/auth";
 
 import * as bcrypt from "bcryptjs";
 
+export const dynamic = "force-dynamic";
+
+
 export async function POST(request: Request) {
   try {
     const { username, password } = await request.json();

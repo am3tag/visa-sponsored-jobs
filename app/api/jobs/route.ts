@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAdminFromCookie } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+
+
 export async function GET() {
   const jobs = await prisma.job.findMany({
     where: { isActive: true },
