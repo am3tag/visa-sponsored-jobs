@@ -5,6 +5,8 @@ import { signAdminToken, setAdminCookie } from "@/lib/auth";
 import * as bcrypt from "bcryptjs";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 
 
 export async function POST(request: Request) {
