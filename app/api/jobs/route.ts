@@ -1,4 +1,14 @@
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";       // force runtime execution only
+export const preferredRegion = "auto";
+
 import { NextResponse } from "next/server";
+
+// Prevent Prisma from initializing at build time
+if (process.env.NODE_ENV === "production" && !process.env.DATABASE_URL) {
+  throw new Error("Skipping Prisma init during build");
+}
+
 import { prisma } from "@/lib/prisma";
 import { getAdminFromCookie } from "@/lib/auth";
 
