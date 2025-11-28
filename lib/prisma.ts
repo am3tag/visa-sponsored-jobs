@@ -1,18 +1,28 @@
-import { PrismaClient } from "@prisma/client";
+// lib/prisma.ts
+import type { PrismaClient } from "@prisma/client";
 
-let prisma: PrismaClient;
+let prisma: PrismaClient | undefined;
 
-if (!globalThis.__prisma__) {
-  if (process.env.DATABASE_URL) {
-    globalThis.__prisma__ = new PrismaClient({
-      log: ["error", "warn"],
-    });
-  } else {
-    // dummy client during build
-    globalThis.__prisma__ = {} as PrismaClient;
+export async function getPrisma() {
+  if (prisma) return prisma;
+
+  if (!process.env.DATABASE_URL) {
+    // during build on Vercel, just return a stub
+    return {} as PrismaClient;
   }
+
+  const { PrismaClient } = await import("@prisma/client");
+  const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
+
+  prisma =
+    globalForPrisma.prisma ||
+    new PrismaClient({
+      log: ["warn", "error"],
+    });
+
+  if (process.env.NODE_ENV !== "production") {
+    globalForPrisma.prisma = prisma;
+  }
+
+  return prisma;
 }
-
-prisma = globalThis.__prisma__;
-
-export { prisma };

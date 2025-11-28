@@ -1,9 +1,10 @@
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 import { JobList } from "@/components/JobList";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
+  const prisma = await getPrisma();
   const jobs = await prisma.job.findMany({
     where: { isActive: true },
     orderBy: { createdAt: "desc" }

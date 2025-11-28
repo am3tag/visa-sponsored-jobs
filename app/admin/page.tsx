@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
+
 import { getAdminFromCookie } from "@/lib/auth";
 import AdminJobForm from "./AdminJobForm";
 import { AdminLogoutButton } from "@/components/AdminLogoutButton";
@@ -12,7 +13,7 @@ export default async function AdminPage() {
   if (!username) {
     redirect("/admin/login");
   }
-
+  const prisma = await getPrisma();
   const jobs = await prisma.job.findMany({
     orderBy: { createdAt: "desc" }
   });
