@@ -2,7 +2,10 @@ import { PrismaClient } from "@prisma/client";
 
 let prisma: PrismaClient;
 
-if (process.env.DATABASE_URL) {
+if (process.env.VERCEL === "1" && !process.env.DATABASE_URL) {
+  // during build on Vercel: return dummy object
+  prisma = {} as PrismaClient;
+} else {
   const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
   prisma =
@@ -14,9 +17,6 @@ if (process.env.DATABASE_URL) {
   if (process.env.NODE_ENV !== "production") {
     globalForPrisma.prisma = prisma;
   }
-} else {
-  // fallback mock for build phase
-  prisma = {} as PrismaClient;
 }
 
 export { prisma };
