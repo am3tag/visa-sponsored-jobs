@@ -1,3 +1,14 @@
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";       // force runtime execution only
+export const preferredRegion = "auto";
+
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
+import type { NextRequest } from "next/server";
+import { prisma } from "@/lib/prisma";
+
+
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAdminFromCookie } from "@/lib/auth";
